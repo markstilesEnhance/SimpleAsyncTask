@@ -5,9 +5,13 @@ import android.widget.TextView
 import java.lang.ref.WeakReference
 import java.util.*
 
-open class SimpleAsyncTask: AsyncTask<Void, Void, String>() {
+open class SimpleAsyncTask(): AsyncTask<Void, Void, String>() {
 
-    private lateinit var mTextView:WeakReference<TextView>
+    lateinit var mTextView: WeakReference<TextView>
+
+    constructor(tView: TextView) : this() {
+        mTextView = WeakReference(tView)
+    }
 
     override fun doInBackground(vararg params: Void?): String {
         val r = Random()
@@ -20,7 +24,8 @@ open class SimpleAsyncTask: AsyncTask<Void, Void, String>() {
         return "Awake at last after sleeping for $s milliseconds!"
     }
 
-    override fun onPostExecute(result: String) {
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
         mTextView.get()?.text = result
     }
 
